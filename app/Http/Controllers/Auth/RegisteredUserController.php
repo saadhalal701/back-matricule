@@ -27,6 +27,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone' => ['required', 'string', 'max:255'],
+            'matricule' => 'nullable|string|max:255',
 
         ]);
 
@@ -35,6 +36,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
+            'matricule' => $request->matricule,
         ]);
 
         $token = $user->createToken('api-token')->plainTextToken;

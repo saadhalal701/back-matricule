@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\OcrResult;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -15,19 +17,21 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * 
      */
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
+        'matricule',
+        'solde',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int,string>
      */
     protected $hidden = [
         'password',
@@ -39,11 +43,28 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+     
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'matricule' => 'string',
         ];
     }
+     public function ocrResults()
+    {
+        return $this->hasMany(OcrResult::class, 'matricule', 'matricule');
+    }
+   public function recharges(){
+    return $this->hasMany(Recharge::class);
+}
+   public function incrementSolde(float $montant)
+{
+    $this->increment('solde', $montant);
+    $this->refresh(); // rafraîchir le modèle avec la nouvelle valeur
+}
+      
+ 
 }
