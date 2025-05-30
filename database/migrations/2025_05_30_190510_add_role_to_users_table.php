@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recharges', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->enum('role', ['user', 'admin'])->default('user')->after('solde');
+
         });
     }
 
@@ -22,6 +23,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recharges');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->dropColumn('role');
+        });
     }
 };
