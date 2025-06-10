@@ -25,6 +25,26 @@ class StationController extends Controller{
         ], 201);
 
      }
+     public function update(Request $request, $id){
+         $station = Station::find($id);
+         if (!$station) {
+             return response()->json(['message' => 'Station not found'], 404);
+         }
+
+         $request->validate([
+             'nomStation' => 'required|string',
+             'localisation' => 'required|string',
+             'tarifStation' => 'required|numeric|min:0',
+         ]);
+
+         $station->update([
+             'nomStation' => $request->nomStation,
+             'localisation' => $request->localisation,
+             'tarifStation' => $request->tarifStation,
+         ]);
+
+         return response()->json(['message' => 'Station updated successfully', 'station' => $station], 200);
+     }
      public function delete($id){
          $station = Station::find($id);
          if (!$station) {

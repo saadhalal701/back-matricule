@@ -24,6 +24,9 @@ public function station()
 {
     return $this->belongsTo(Station::class, 'nom_station', 'nomStation');
 }
+public function paiements()
+{
+    return $this->hasMany(Paiement::class, 'ocr_result_id');
 
 }
-
+}

@@ -26,11 +26,12 @@ class OcrResultController extends Controller
         return response()->json([
         'user' => [
             'name' => $user->name,
+            'solde' => $user->solde,
             'matricule' => $user->matricule,
         ],
         'resultats_ocr' => $ocrResults
     ]);
     }
-    
-    
+ 
+
 }

@@ -14,6 +14,7 @@ class Paiement extends Model{
     protected $fillable = [
     'matricule',
     'user_id',
+    'ocr_result_id',
     'montant',
     'date_paiement',
     'status',
@@ -23,5 +24,8 @@ public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
+public function ocrResult()
+    {
+        return $this->belongsTo(OcrResult::class, 'ocr_result_id');
+    }
 }

@@ -10,13 +10,14 @@ class PaiementController extends Controller{
         $request->validate([
              'user_id' => 'required|exists:users,id',
             'matricule' => 'required|string',
+            'ocr_result_id' => 'nullable|exists:resultats_ocr,id',
             'montant' => 'required|numeric',
             'date_paiement' => 'required|date',
-             'status' => 'required|in:payé,non payé',
+             'status' => 'required|in:payé,non_payé',
         ]);
 
   $user = User::findOrFail($request->user_id);
-         if ($request->status === 'payé') {
+         if ($request->status === 'non_payé') {
         if ($user->solde < $request->montant) {
             return response()->json([
                 'message' => 'Solde insuffisant pour effectuer ce paiement.'
@@ -28,6 +29,7 @@ class PaiementController extends Controller{
        $paiement= Paiement::create([
             'user_id' => $user->id,
       'matricule' => $request->matricule,
+        'ocr_result_id' => $request->ocr_result_id,
         'montant' => $request->montant,
         'date_paiement' => $request->date_paiement,
         'status' => $request->status,
